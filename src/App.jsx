@@ -1,10 +1,22 @@
 import './App.css'
 
+const YOUTUBE_VIDEO = 'https://www.youtube.com/watch?v=31rH39mrgbc'
+
+function getYouTubeId(urlOrId) {
+  if (/^[\w-]{11}$/.test(urlOrId)) return urlOrId
+  const match = urlOrId.match(
+    /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/,
+  )
+  return match?.[1] ?? ''
+}
+
 function App() {
+  const youtubeId = getYouTubeId(YOUTUBE_VIDEO)
+
   return (
     <div className="page">
       <header className="header">
-        <span className="logo">LAVINA</span>
+        <span className="logo">Art Mandell</span>
         <nav className="nav">
           <a href="#work">my work</a>
           <a href="#about">about</a>
@@ -14,24 +26,50 @@ function App() {
 
       <main className="main">
         <p>
-          7+ years of freelance and in-house digital design experience within the
-          fashion and e-commerce industry. I combine elevated visuals with
-          functionality, creating designs that are both beautiful and performance
-          driven.
+          Some cool sounds 
         </p>
         <p>
-          Trend-driven creative that lives seamlessly across both digital and
-          physical spaces. From social-first content and website design to campaign
-          visuals and brand storytelling, I love building elevated, culturally
-          relevant work.
+          Trumpet player, 
+          physical spaces. Elevator 
+          Album coming out A Day in the Park
+          alwys on the hunt for new sounds new projects and new collabs
         </p>
         <p className="status">
-          BASED IN OC, SENIOR GRAPHIC DESIGNER{' '}
+          BASED asf IN NY{' '}
           <a href="https://edikted.com" target="_blank" rel="noopener noreferrer">
             @EDIKTED
           </a>
         </p>
       </main>
+
+      <section id="work" className="work">
+        <div className="work-divider">
+          <h2 className="work-heading">my work</h2>
+          <hr />
+        </div>
+
+        <article className="work-item">
+          <div className="work-description">
+            <h2>Birdsong</h2>
+            <p>of riparian inspiration. featuring birds from outside the target on W 100th street </p>
+          </div>
+
+          {youtubeId ? (
+            <div className="video-embed">
+              <iframe
+                src={`https://www.youtube.com/embed/${youtubeId}`}
+                title="Birdsong"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+          ) : (
+            <p className="video-placeholder">
+              Add your YouTube link to <code>YOUTUBE_VIDEO</code> in App.jsx
+            </p>
+          )}
+        </article>
+      </section>
     </div>
   )
 }
