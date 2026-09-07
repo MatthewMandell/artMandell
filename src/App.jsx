@@ -77,7 +77,7 @@ const GROUP_PROJECTS = [
   {
     title: 'Suite For Drowning',
     description: 'Suite for Drowning is a collection of musical works directly inspired by near death aquatic experiences on the California Coast. This suite of live electroacoustic pieces explores the vastness of the ocean, natural forces, biological fear responses, out of body experience, and after-life.',
-    credits: 'with ',
+    credits: 'with Luca Protopapas, Leo Safir, and Lucian Parisi',
     video: 'https://www.youtube.com/watch?v=-KKzHRUVADY',
     start: 640,
     layout: 'horizontal',
