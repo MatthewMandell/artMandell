@@ -130,6 +130,12 @@ function App() {
         </div>
 
         <div className="about-content">
+          <img
+            src="/images/about.png"
+            alt="Art Mandell"
+            className="about-photo"
+          />
+
           <div className="about-text">
             <p>
               hi,
@@ -141,12 +147,6 @@ function App() {
             </p>
             <p className="status">BASED IN BROOKLYN, NY</p>
           </div>
-
-          <img
-            src="/images/about.png"
-            alt="Art Mandell"
-            className="about-photo"
-          />
         </div>
       </section>
 

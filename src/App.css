@@ -62,7 +62,7 @@
 
 .about-content {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto 1fr;
   gap: 48px 60px;
   align-items: start;
 }
