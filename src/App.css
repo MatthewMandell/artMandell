@@ -102,6 +102,10 @@
   align-items: start;
 }
 
+.work-item + .work-item {
+  margin-top: 80px;
+}
+
 .work-description {
   max-width: 420px;
 }
