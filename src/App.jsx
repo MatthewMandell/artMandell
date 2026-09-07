@@ -1,27 +1,51 @@
+import { useState } from 'react'
+import CustomCursor from './CustomCursor'
 import './App.css'
 
 const YOUTUBE_VIDEO = 'https://www.youtube.com/watch?v=60VmX56dpxg'
 
-const PROJECTS = [
+const SOLO_PROJECTS = [
   {
     title: 'Birdsong',
-    description:
-      'of riparian inspiration. featuring birds from outside the target on W 100th street',
+    description: (
+      <>
+        of <span className="highlight">riparian</span> inspiration. featuring birds
+        from outside the target on W 100th street
+      </>
+    ),
     start: 0,
   },
   {
     title: 'Daffodil',
-    description: 'the first of these tracks, Daffodils are the first flowers to bloom in the spring.',
+    description: (
+      <>
+        the first of these tracks, Daffodils are the{' '}
+        <span className="highlight">first</span> flowers to bloom in the{' '}
+        <span className="highlight">spring</span>.
+      </>
+    ),
     start: 200,
   },
   {
     title: 'Summer Wind',
-    description: 'Can you hear the wind? Coming from the trees?',
+    description: (
+      <>
+        Can you <span className="highlight">hear</span> the wind? Coming from{' '}
+        <span className="highlight">the</span>{' '}
+        <span className="highlight">trees</span>?
+      </>
+    ),
     start: 451,
   },
   {
     title: 'Foliage',
-    description: 'look under the trees, watch each branch add another filter to the light',
+    description: (
+      <>
+        <span className="highlight">look</span> under the trees,{' '}
+        <span className="highlight">watch</span> each branch add another{' '}
+        <span className="highlight">filter</span> to the light
+      </>
+    ),
     start: 763,
   },
   {
@@ -31,15 +55,42 @@ const PROJECTS = [
   },
   {
     title: 'Thunder Comes From Space',
-    description: 'lightning is stored in the stars',
+    description: (
+      <>
+        lightning is stored in the <span className="highlight">stars</span>{' '}
+        <span className="sparkle">✨</span>
+      </>
+    ),
     start: 1150,
   },
+]
+
+const GROUP_PROJECTS = [
   {
-    title: 'Daisy',
-    description: 'but im not a keys player',
-    start: 1325,
+    title: 'Time Capsule',
+    description: 'Performed in a church in Isla Vista, CA, Time Capsule was the last piece of music I played before moving to New York City.',
+    credits: 'with Lucian Parisi and J. Fry',
+    video: 'https://www.youtube.com/watch?v=kV-zeB1GeQw',
+    start: 0,
+    layout: 'horizontal',
+  },
+  {
+    title: 'Suite For Drowning',
+    description: 'Suite for Drowning is a collection of musical works directly inspired by near death aquatic experiences on the California Coast. This suite of live electroacoustic pieces explores the vastness of the ocean, natural forces, biological fear responses, out of body experience, and after-life.',
+    credits: 'with ',
+    video: 'https://www.youtube.com/watch?v=-KKzHRUVADY',
+    start: 640,
+    layout: 'horizontal',
   },
 ]
+
+const WORK_TABS = [
+  { id: 'solo', label: 'A Day in the Park - Solo Project', projects: SOLO_PROJECTS },
+  { id: 'group', label: 'Collaborations', projects: GROUP_PROJECTS },
+]
+
+const CONTACT_EMAIL = 'matthew.a.mandell@gmail.com'
+const CONTACT_PHONE = '(914) 715-0869'
 
 function getYouTubeId(urlOrId) {
   if (/^[\w-]{11}$/.test(urlOrId)) return urlOrId
@@ -56,12 +107,15 @@ function getYouTubeEmbedUrl(id, start = 0) {
 }
 
 function App() {
-  const youtubeId = getYouTubeId(YOUTUBE_VIDEO)
+  const [activeTab, setActiveTab] = useState('solo')
+  const activeProjects =
+    WORK_TABS.find((tab) => tab.id === activeTab)?.projects ?? []
 
   return (
     <div className="page">
+      <CustomCursor />
       <header className="header">
-        <span className="logo">Art Mandell</span>
+        <span className="logo"><span className="highlight">Art Mandell</span></span>
         <nav className="nav">
           <a href="#work">my work</a>
           <a href="#about">about</a>
@@ -69,23 +123,32 @@ function App() {
         </nav>
       </header>
 
-      <main className="main">
-        <p>
-          Some cool sounds 
-        </p>
-        <p>
-          Trumpet player, 
-          physical spaces. Elevator 
-          Album coming out A Day in the Park
-          alwys on the hunt for new sounds new projects and new collabs
-        </p>
-        <p className="status">
-          BASED asf IN NY{' '}
-          <a href="https://edikted.com" target="_blank" rel="noopener noreferrer">
-            @EDIKTED
-          </a>
-        </p>
-      </main>
+      <section id="about" className="about">
+        <div className="about-divider">
+          <h2 className="about-heading">about</h2>
+          <hr />
+        </div>
+
+        <div className="about-content">
+          <div className="about-text">
+            <p>
+              hi,
+              i’m <strong>Matthew</strong>. it’s so nice of you to drop by.
+            </p>
+            <p>
+              i’m a trumpet player of jazz background exploring electroacoustic sounds and
+              ambient textures. always on the hunt for new sounds and new collaborations.
+            </p>
+            <p className="status">BASED IN BROOKLYN, NY</p>
+          </div>
+
+          <img
+            src="/images/about.png"
+            alt="Art Mandell"
+            className="about-photo"
+          />
+        </div>
+      </section>
 
       <section id="work" className="work">
         <div className="work-divider">
@@ -93,29 +156,116 @@ function App() {
           <hr />
         </div>
 
-        {PROJECTS.map((project) => (
-          <article key={project.title} className="work-item">
-            <div className="work-description">
-              <h2>{project.title}</h2>
-              <p>{project.description}</p>
-            </div>
+        <div className="work-tabs" role="tablist" aria-label="Work categories">
+          {WORK_TABS.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === tab.id}
+              className={`work-tab${activeTab === tab.id ? ' is-active' : ''}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
 
-            {youtubeId ? (
-              <div className="video-embed">
-                <iframe
-                  src={getYouTubeEmbedUrl(youtubeId, project.start)}
-                  title={project.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
-              </div>
-            ) : (
-              <p className="video-placeholder">
-                Add your YouTube link to <code>YOUTUBE_VIDEO</code> in App.jsx
-              </p>
-            )}
-          </article>
-        ))}
+        <div role="tabpanel">
+          {activeProjects.length > 0 ? (
+            activeProjects.map((project) => (
+              <article
+                key={project.title}
+                className={`work-item${project.layout === 'horizontal' ? ' work-item--full' : ''}`}
+              >
+                {project.layout === 'horizontal' ? (
+                  <>
+                    <h2 className="work-title">{project.title}</h2>
+
+                    {getYouTubeId(project.video ?? YOUTUBE_VIDEO) ? (
+                      <div className="video-embed video-embed--wide">
+                        <iframe
+                          src={getYouTubeEmbedUrl(
+                            getYouTubeId(project.video ?? YOUTUBE_VIDEO),
+                            project.start,
+                          )}
+                          title={project.title}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                        />
+                      </div>
+                    ) : (
+                      <p className="video-placeholder">
+                        Add your YouTube link to <code>YOUTUBE_VIDEO</code> in App.jsx
+                      </p>
+                    )}
+
+                    <p className="work-caption">{project.description}</p>
+                    {project.credits && (
+                      <p className="work-credits">
+                        <span className="highlight">{project.credits}</span>
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <div className="work-description">
+                      <h2>{project.title}</h2>
+                      <p>{project.description}</p>
+                    </div>
+
+                    {getYouTubeId(project.video ?? YOUTUBE_VIDEO) ? (
+                      <div className="video-embed">
+                        <iframe
+                          src={getYouTubeEmbedUrl(
+                            getYouTubeId(project.video ?? YOUTUBE_VIDEO),
+                            project.start,
+                          )}
+                          title={project.title}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                        />
+                      </div>
+                    ) : (
+                      <p className="video-placeholder">
+                        Add your YouTube link to <code>YOUTUBE_VIDEO</code> in App.jsx
+                      </p>
+                    )}
+                  </>
+                )}
+              </article>
+            ))
+          ) : (
+            <p className="work-empty">Nothing here yet.</p>
+          )}
+        </div>
+      </section>
+
+      <section id="contact" className="contact">
+        <div className="contact-divider">
+          <h2 className="contact-heading">contact</h2>
+          <hr />
+        </div>
+
+        <div className="contact-content">
+          <div className="contact-info">
+            <p className="contact-tagline">
+              [let's create <span className="highlight">something cool</span> together]
+            </p>
+            <p>
+              <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+            </p>
+            <p>
+              <a href={`tel:${CONTACT_PHONE.replace(/\D/g, '')}`}>{CONTACT_PHONE}</a>
+            </p>
+          </div>
+
+          <img
+            src="/images/contact.png"
+            alt="Art Mandell playing trumpet"
+            className="contact-photo"
+          />
+        </div>
       </section>
     </div>
   )
